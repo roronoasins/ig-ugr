@@ -10,11 +10,11 @@ Practicas realizadas en la asignatura Informática Gráfica - Dpto. de Lenguajes
 
 ## Practicas realizadas:
 
-### P1 - Modelado y visualización de objetos 3D sencillos
-### P2 - Modelos PLY y Poligonales
-### P3 - Modelos jerárquicos
-### P4 - Iluminación y texturas
-### P5 - Interacción
+### [P1](https://github.com/roronoasins/ig_ugr/tree/master/p1/esqueleto_qt_alumnos1) - Modelado y visualización de objetos 3D sencillos
+### [P2](https://github.com/roronoasins/ig_ugr/tree/master/p2/esqueleto_qt_alumnos2) - Modelos PLY y Poligonales
+### [P3](https://github.com/roronoasins/ig_ugr/tree/master/p3/esqueleto_qt_alumnos_qtimer) - Modelos jerárquicos
+### [P4](https://github.com/roronoasins/ig_ugr/tree/master/p4/esqueleto_qt_alumnos) - Iluminación y texturas
+### [P5](https://github.com/roronoasins/ig_ugr/tree/master/p5/esqueleto_qt_alumnos1) - Interacción
 
 ## Autor
-* **Billie Thompson** - [roronoasins](https://github.com/roronoasins)
+* **Luis González** - [roronoasins](https://github.com/roronoasins)
