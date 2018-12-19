@@ -18,3 +18,7 @@ Practicas realizadas en la asignatura Informática Gráfica - Dpto. de Lenguajes
 
 ## Autor
 * **Luis González** - [roronoasins](https://github.com/roronoasins)
+
+
+## License
+Este projecto está licenciado bajo GNU General Public License v3.0 - ver el fichero [LICENSE.md](LICENSE.md) para más detalles
