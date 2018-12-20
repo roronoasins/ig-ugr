@@ -1,7 +1,7 @@
 # Informática Gráfica UGR
 > Escuela Técnica Superior de Ingeniería Informática y Telecomunicaciones, Universidad de Granada
 
-Practicas realizadas en la asignatura Informática Gráfica - Dpto. de Lenguajes y Sistemas Informáticos - en la Universidad de Granada, curso 2018-2019.
+Prácticas realizadas en la asignatura Informática Gráfica - Dpto. de Lenguajes y Sistemas Informáticos - en la Universidad de Granada, curso 2018-2019.
 
 ## Herramientas utilizadas
 
@@ -21,4 +21,4 @@ Practicas realizadas en la asignatura Informática Gráfica - Dpto. de Lenguajes
 
 
 ## License
-Este projecto está licenciado bajo GNU General Public License v3.0 - ver el fichero [LICENSE.md](LICENSE.md) para más detalles
+Este proyecto está licenciado bajo GNU General Public License v3.0 - ver el fichero [LICENSE.md](LICENSE.md) para más detalles
