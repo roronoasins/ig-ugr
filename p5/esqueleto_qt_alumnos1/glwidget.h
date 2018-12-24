@@ -97,6 +97,9 @@ private:
   float Observer_angle_y;
   float Observer_distance;
 
+  int last_x;
+  int last_y;
+
   bool Animation;
 
   QTimer *Timer;

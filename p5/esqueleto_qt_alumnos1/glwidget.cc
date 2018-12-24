@@ -145,9 +145,33 @@ void _gl_widget::mouseReleaseEvent(QMouseEvent *Event)
 
 void _gl_widget::mouseMoveEvent(QMouseEvent *Event)
 {
-  /*************************/
+    int x = Event->x(), y = Event->y();
 
-  /*************************/
+    if ( last_x < x )   Observer_angle_y-=ANGLE_STEP_KEY/3;
+    else if (last_x > x )   Observer_angle_y+=ANGLE_STEP_KEY/3;
+    if ( last_y < y )   Observer_angle_x-=ANGLE_STEP_KEY/3;
+    else if (last_y > y )   Observer_angle_x+=ANGLE_STEP_KEY/3;
+
+    last_x = x;
+    last_y = y;
+
+   /* if (x != Initial_position_x) {
+        x -= Initial_position_x;
+    }
+    if (y != Initial_position_y) {
+        y -= Initial_position_y;
+    }*/
+    /*cout << last_x << " " << last_y << endl;
+    if (Projection_type==PERSPECTIVE_PROJECTION) {
+        Observer_angle_y += last_y;
+        Observer_angle_x += last_x;
+    }else if (Projection_type==PARALLEL_PROJECTION) {
+
+            }*/
+
+   // Initial_position_x=x;
+  //  Initial_position_y=y;
+    update();
 }
 
 /**
@@ -158,11 +182,23 @@ void _gl_widget::mouseMoveEvent(QMouseEvent *Event)
 
 void _gl_widget::wheelEvent(QWheelEvent *Event)
 {
-  int Step=Event->delta()/120;
-  
-  /*************************/
+    //Most mouse types work in steps of 15 degrees, in which case the delta value is a multiple of 120; i.e., 120 units * 1/8 = 15 degrees.
+   // int Step=Event->delta()/120;
+    //QPoint numDegrees = Event->angleDelta()/8;
+    const int degrees = Event->delta()  / 8;
+    int steps = degrees / 15;
+    //cout << degrees << " " << steps << endl;
 
-  /*************************/
+    if (Projection_type==PERSPECTIVE_PROJECTION) {
+        if (degrees > 0) Observer_distance /= steps*DISTANCE_FACTOR;
+        else if (degrees < 0)  Observer_distance *= abs(steps*DISTANCE_FACTOR);
+    }else if (Projection_type==PARALLEL_PROJECTION) {
+            if (degrees > 0) Observer_distance /= steps*DISTANCE_FACTOR*DEFAULT_SCALE_FACTOR;
+            else if (degrees < 0)  Observer_distance *= abs(steps*DISTANCE_FACTOR*DEFAULT_SCALE_FACTOR);
+            }
+
+    Event->accept();
+    update();
 }
 
 /**
@@ -196,7 +232,9 @@ void _gl_widget::change_projection()
   if (Projection_type==PERSPECTIVE_PROJECTION){
     glFrustum(-Camera_width,Camera_width,-Camera_width*Aspect, Camera_width*Aspect,FRONT_PLANE_PERSPECTIVE,BACK_PLANE_PERSPECTIVE);
   }
-  else{
+  else if (Projection_type==PARALLEL_PROJECTION){
+      //Projection . ortho ( X_MIN∗Scale_factor , X_MAX∗Scale_factor , Y_MIN∗Aspect∗Scale_factor , Y_MAX∗Aspect∗Scale_factor , FRONT_PLANE_PARALLEL , BACK_PLANE_PARALLEL ) ;
+      glOrtho(-Camera_width*DEFAULT_SCALE_FACTOR , X_MAX*DEFAULT_SCALE_FACTOR , -Camera_width*Aspect*DEFAULT_SCALE_FACTOR , Camera_width*Aspect*DEFAULT_SCALE_FACTOR , FRONT_PLANE_PARALLEL , BACK_PLANE_PARALLEL );
   /*************************/
 
   /*************************/
@@ -356,6 +394,8 @@ void _gl_widget::initializeGL()
 
   Animation=false;
 
+  last_x=0;
+  last_y=0;
 
   Timer = new QTimer(this);
   Timer->setInterval(0);
