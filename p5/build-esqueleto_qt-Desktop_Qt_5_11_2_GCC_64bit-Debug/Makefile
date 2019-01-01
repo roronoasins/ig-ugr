@@ -56,7 +56,10 @@ SOURCES       = ../esqueleto_qt_alumnos1/basic_object3d.cc \
 		../esqueleto_qt_alumnos1/tetrahedron.cc \
 		../esqueleto_qt_alumnos1/main.cc \
 		../esqueleto_qt_alumnos1/glwidget.cc \
-		../esqueleto_qt_alumnos1/window.cc moc_glwidget.cpp \
+		../esqueleto_qt_alumnos1/window.cc \
+		../esqueleto_qt_alumnos1/object3d_sweep_basic.cpp \
+		../esqueleto_qt_alumnos1/file_ply.cpp \
+		../esqueleto_qt_alumnos1/object_ply.cpp moc_glwidget.cpp \
 		moc_window.cpp
 OBJECTS       = basic_object3d.o \
 		object3d.o \
@@ -65,6 +68,9 @@ OBJECTS       = basic_object3d.o \
 		main.o \
 		glwidget.o \
 		window.o \
+		object3d_sweep_basic.o \
+		file_ply.o \
+		object_ply.o \
 		moc_glwidget.o \
 		moc_window.o
 DIST          = /home/luis/Qt/5.11.2/gcc_64/mkspecs/features/spec_pre.prf \
@@ -236,6 +242,7 @@ DIST          = /home/luis/Qt/5.11.2/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/luis/Qt/5.11.2/gcc_64/mkspecs/features/qt_config.prf \
 		/home/luis/Qt/5.11.2/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/luis/Qt/5.11.2/gcc_64/mkspecs/features/spec_post.prf \
+		../esqueleto_qt_alumnos1/.qmake.stash \
 		/home/luis/Qt/5.11.2/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/luis/Qt/5.11.2/gcc_64/mkspecs/features/toolchain.prf \
 		/home/luis/Qt/5.11.2/gcc_64/mkspecs/features/default_pre.prf \
@@ -261,13 +268,20 @@ DIST          = /home/luis/Qt/5.11.2/gcc_64/mkspecs/features/spec_pre.prf \
 		../esqueleto_qt_alumnos1/axis.h \
 		../esqueleto_qt_alumnos1/tetrahedron.h \
 		../esqueleto_qt_alumnos1/glwidget.h \
-		../esqueleto_qt_alumnos1/window.h ../esqueleto_qt_alumnos1/basic_object3d.cc \
+		../esqueleto_qt_alumnos1/window.h \
+		../esqueleto_qt_alumnos1/object3d_sweep_basic.h \
+		../esqueleto_qt_alumnos1/file_ply.h \
+		../esqueleto_qt_alumnos1/object_ply.h \
+		../esqueleto_qt_alumnos1/object_ply.h ../esqueleto_qt_alumnos1/basic_object3d.cc \
 		../esqueleto_qt_alumnos1/object3d.cc \
 		../esqueleto_qt_alumnos1/axis.cc \
 		../esqueleto_qt_alumnos1/tetrahedron.cc \
 		../esqueleto_qt_alumnos1/main.cc \
 		../esqueleto_qt_alumnos1/glwidget.cc \
-		../esqueleto_qt_alumnos1/window.cc
+		../esqueleto_qt_alumnos1/window.cc \
+		../esqueleto_qt_alumnos1/object3d_sweep_basic.cpp \
+		../esqueleto_qt_alumnos1/file_ply.cpp \
+		../esqueleto_qt_alumnos1/object_ply.cpp
 QMAKE_TARGET  = esqueleto_qt
 DESTDIR       = 
 TARGET        = esqueleto_qt
@@ -448,6 +462,7 @@ Makefile: ../esqueleto_qt_alumnos1/esqueleto_qt.pro /home/luis/Qt/5.11.2/gcc_64/
 		/home/luis/Qt/5.11.2/gcc_64/mkspecs/features/qt_config.prf \
 		/home/luis/Qt/5.11.2/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/luis/Qt/5.11.2/gcc_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/home/luis/Qt/5.11.2/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/luis/Qt/5.11.2/gcc_64/mkspecs/features/toolchain.prf \
 		/home/luis/Qt/5.11.2/gcc_64/mkspecs/features/default_pre.prf \
@@ -641,6 +656,7 @@ Makefile: ../esqueleto_qt_alumnos1/esqueleto_qt.pro /home/luis/Qt/5.11.2/gcc_64/
 /home/luis/Qt/5.11.2/gcc_64/mkspecs/features/qt_config.prf:
 /home/luis/Qt/5.11.2/gcc_64/mkspecs/linux-g++/qmake.conf:
 /home/luis/Qt/5.11.2/gcc_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /home/luis/Qt/5.11.2/gcc_64/mkspecs/features/exclusive_builds.prf:
 /home/luis/Qt/5.11.2/gcc_64/mkspecs/features/toolchain.prf:
 /home/luis/Qt/5.11.2/gcc_64/mkspecs/features/default_pre.prf:
@@ -679,8 +695,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /home/luis/Qt/5.11.2/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../esqueleto_qt_alumnos1/colors.h ../esqueleto_qt_alumnos1/basic_object3d.h ../esqueleto_qt_alumnos1/object3d.h ../esqueleto_qt_alumnos1/axis.h ../esqueleto_qt_alumnos1/tetrahedron.h ../esqueleto_qt_alumnos1/glwidget.h ../esqueleto_qt_alumnos1/window.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../esqueleto_qt_alumnos1/basic_object3d.cc ../esqueleto_qt_alumnos1/object3d.cc ../esqueleto_qt_alumnos1/axis.cc ../esqueleto_qt_alumnos1/tetrahedron.cc ../esqueleto_qt_alumnos1/main.cc ../esqueleto_qt_alumnos1/glwidget.cc ../esqueleto_qt_alumnos1/window.cc $(DISTDIR)/
+	$(COPY_FILE) --parents ../esqueleto_qt_alumnos1/colors.h ../esqueleto_qt_alumnos1/basic_object3d.h ../esqueleto_qt_alumnos1/object3d.h ../esqueleto_qt_alumnos1/axis.h ../esqueleto_qt_alumnos1/tetrahedron.h ../esqueleto_qt_alumnos1/glwidget.h ../esqueleto_qt_alumnos1/window.h ../esqueleto_qt_alumnos1/object3d_sweep_basic.h ../esqueleto_qt_alumnos1/file_ply.h ../esqueleto_qt_alumnos1/object_ply.h ../esqueleto_qt_alumnos1/object_ply.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../esqueleto_qt_alumnos1/basic_object3d.cc ../esqueleto_qt_alumnos1/object3d.cc ../esqueleto_qt_alumnos1/axis.cc ../esqueleto_qt_alumnos1/tetrahedron.cc ../esqueleto_qt_alumnos1/main.cc ../esqueleto_qt_alumnos1/glwidget.cc ../esqueleto_qt_alumnos1/window.cc ../esqueleto_qt_alumnos1/object3d_sweep_basic.cpp ../esqueleto_qt_alumnos1/file_ply.cpp ../esqueleto_qt_alumnos1/object_ply.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -847,6 +863,7 @@ moc_glwidget.cpp: /home/luis/Qt/5.11.2/gcc_64/include/QtWidgets/QOpenGLWidget \
 		../esqueleto_qt_alumnos1/basic_object3d.h \
 		../esqueleto_qt_alumnos1/tetrahedron.h \
 		../esqueleto_qt_alumnos1/object3d.h \
+		../esqueleto_qt_alumnos1/file_ply_stl.h \
 		../esqueleto_qt_alumnos1/glwidget.h \
 		moc_predefs.h \
 		/home/luis/Qt/5.11.2/gcc_64/bin/moc
@@ -1290,6 +1307,7 @@ glwidget.o: ../esqueleto_qt_alumnos1/glwidget.cc ../esqueleto_qt_alumnos1/glwidg
 		../esqueleto_qt_alumnos1/basic_object3d.h \
 		../esqueleto_qt_alumnos1/tetrahedron.h \
 		../esqueleto_qt_alumnos1/object3d.h \
+		../esqueleto_qt_alumnos1/file_ply_stl.h \
 		../esqueleto_qt_alumnos1/window.h \
 		/home/luis/Qt/5.11.2/gcc_64/include/QtWidgets/QMainWindow \
 		/home/luis/Qt/5.11.2/gcc_64/include/QtWidgets/qmainwindow.h \
@@ -1489,8 +1507,27 @@ window.o: ../esqueleto_qt_alumnos1/window.cc /home/luis/Qt/5.11.2/gcc_64/include
 		../esqueleto_qt_alumnos1/axis.h \
 		../esqueleto_qt_alumnos1/basic_object3d.h \
 		../esqueleto_qt_alumnos1/tetrahedron.h \
-		../esqueleto_qt_alumnos1/object3d.h
+		../esqueleto_qt_alumnos1/object3d.h \
+		../esqueleto_qt_alumnos1/file_ply_stl.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o window.o ../esqueleto_qt_alumnos1/window.cc
+
+object3d_sweep_basic.o: ../esqueleto_qt_alumnos1/object3d_sweep_basic.cpp ../esqueleto_qt_alumnos1/object3d_sweep_basic.h \
+		../esqueleto_qt_alumnos1/object3d.h \
+		../esqueleto_qt_alumnos1/basic_object3d.h \
+		../esqueleto_qt_alumnos1/colors.h \
+		../esqueleto_qt_alumnos1/vertex.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o object3d_sweep_basic.o ../esqueleto_qt_alumnos1/object3d_sweep_basic.cpp
+
+file_ply.o: ../esqueleto_qt_alumnos1/file_ply.cpp ../esqueleto_qt_alumnos1/file_ply_stl.h \
+		../esqueleto_qt_alumnos1/vertex.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o file_ply.o ../esqueleto_qt_alumnos1/file_ply.cpp
+
+object_ply.o: ../esqueleto_qt_alumnos1/object_ply.cpp ../esqueleto_qt_alumnos1/object_ply.h \
+		../esqueleto_qt_alumnos1/object3d.h \
+		../esqueleto_qt_alumnos1/basic_object3d.h \
+		../esqueleto_qt_alumnos1/colors.h \
+		../esqueleto_qt_alumnos1/vertex.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o object_ply.o ../esqueleto_qt_alumnos1/object_ply.cpp
 
 moc_glwidget.o: moc_glwidget.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_glwidget.o moc_glwidget.cpp

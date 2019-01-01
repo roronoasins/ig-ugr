@@ -21,6 +21,8 @@
 #include "colors.h"
 #include "axis.h"
 #include "tetrahedron.h"
+#include "file_ply_stl.h"
+#include "object_ply.h"
 
 namespace _gl_widget_ne {
   const float X_MAX=.1;
@@ -36,7 +38,7 @@ namespace _gl_widget_ne {
 
   typedef enum {MODE_DRAW_POINT,MODE_DRAW_LINE,MODE_DRAW_FILL} _mode_draw;
   typedef enum {MODE_RENDERING_SOLID,MODE_RENDERING_SOLID_CHESS, MODE_RENDERING_ILLUMINATION_FLAT_SHADING, MODE_RENDERING_ILLUMINATION_SMOOTH_SHADING, MODE_RENDERING_TEXTURE} _mode_rendering;
-  typedef enum {OBJECT_TETRAHEDRON} _object;
+  typedef enum {OBJECT_TETRAHEDRON, OBJECT_PLY} _object;
 
   typedef enum {PERSPECTIVE_PROJECTION,PARALLEL_PROJECTION} _projection_type;
 
@@ -83,6 +85,7 @@ private:
 
   _axis Axis;
   _tetrahedron Tetrahedron;
+  _object_ply Ply;
 
   _gl_widget_ne::_object Object;
 
@@ -90,6 +93,7 @@ private:
   bool Draw_line;
   bool Draw_fill;
   bool Draw_chess;
+  bool Draw_selection;
 
   _gl_widget_ne::_mode_rendering Mode_rendering;
 
@@ -107,8 +111,6 @@ private:
   int Window_width;
   int Window_height;
 
-  int Initial_position_x;
-  int Initial_position_y;
   bool Change_position;
   bool Change_camera;
 

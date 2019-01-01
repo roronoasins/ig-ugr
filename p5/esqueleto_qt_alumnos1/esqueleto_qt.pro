@@ -5,7 +5,11 @@ HEADERS += \
   axis.h \
   tetrahedron.h \
   glwidget.h \
-  window.h
+  window.h \
+    object3d_sweep_basic.h \
+    file_ply.h \
+    object_ply.h \
+    object_ply.h
 
 SOURCES += \
   basic_object3d.cc \
@@ -14,7 +18,10 @@ SOURCES += \
   tetrahedron.cc \
   main.cc \
   glwidget.cc \
-  window.cc
+  window.cc \
+    object3d_sweep_basic.cpp \
+    file_ply.cpp \
+    object_ply.cpp
 
 
 INCLUDEPATH += /casa/dmartin/codigo/funciontecas/glew/include

@@ -38,7 +38,7 @@ void _gl_widget::keyPressEvent(QKeyEvent *Keyevent)
 {
   switch(Keyevent->key()){
   case Qt::Key_1:Object=OBJECT_TETRAHEDRON;break;
-  case Qt::Key_2:break;
+  case Qt::Key_2:Object=OBJECT_PLY;break;
   case Qt::Key_3:break;
   case Qt::Key_4:break;
   case Qt::Key_5:break;
@@ -91,7 +91,7 @@ void _gl_widget::keyPressEvent(QKeyEvent *Keyevent)
 
   case Qt::Key_Q:break;
   case Qt::Key_W:break;
-  case Qt::Key_S:break;
+  case Qt::Key_S:Draw_selection=!Draw_selection;break;
   case Qt::Key_D:break;
   case Qt::Key_Z:break;
   case Qt::Key_X:break;
@@ -120,6 +120,17 @@ void _gl_widget::mousePressEvent(QMouseEvent *Event)
 {
   /*************************/
 
+    /*if ( Event->buttons ( ) & Qt::LeftButton ) {
+        Change_position=true ;
+        Initial_position_x = Event->x();
+        Initial_position_y = Event->y();
+    }
+    else */
+    if ( Event->buttons() & Qt::RightButton ) {
+        Selection_position_x = Event->x();
+        Selection_position_y = height() - Event->y();
+    }
+
   /*************************/
 }
 
@@ -133,7 +144,17 @@ void _gl_widget::mouseReleaseEvent(QMouseEvent *Event)
 {
   /*************************/
 
+    if (Draw_fill) {
+        if ( Event->button() & Qt::RightButton ) {
+            cout << "pick" << endl;
+            pick();
+            update();
+        }
+    }
+
   /*************************/
+
+
 }
 
 
@@ -145,32 +166,17 @@ void _gl_widget::mouseReleaseEvent(QMouseEvent *Event)
 
 void _gl_widget::mouseMoveEvent(QMouseEvent *Event)
 {
-    int x = Event->x(), y = Event->y();
+   int x = Event->x(), y = Event->y();
 
-    if ( last_x < x )   Observer_angle_y-=ANGLE_STEP_KEY/3;
-    else if (last_x > x )   Observer_angle_y+=ANGLE_STEP_KEY/3;
-    if ( last_y < y )   Observer_angle_x-=ANGLE_STEP_KEY/3;
-    else if (last_y > y )   Observer_angle_x+=ANGLE_STEP_KEY/3;
+    if ( Event->buttons() & Qt::LeftButton ) {
+        if ( last_x < x )   Observer_angle_y+=ANGLE_STEP_KEY/3;
+        else if (last_x > x )   Observer_angle_y-=ANGLE_STEP_KEY/3;
+        if ( last_y < y )   Observer_angle_x+=ANGLE_STEP_KEY/3;
+        else if (last_y > y )   Observer_angle_x-=ANGLE_STEP_KEY/3;
 
-    last_x = x;
-    last_y = y;
-
-   /* if (x != Initial_position_x) {
-        x -= Initial_position_x;
+        last_x = x;
+        last_y = y;
     }
-    if (y != Initial_position_y) {
-        y -= Initial_position_y;
-    }*/
-    /*cout << last_x << " " << last_y << endl;
-    if (Projection_type==PERSPECTIVE_PROJECTION) {
-        Observer_angle_y += last_y;
-        Observer_angle_x += last_x;
-    }else if (Projection_type==PARALLEL_PROJECTION) {
-
-            }*/
-
-   // Initial_position_x=x;
-  //  Initial_position_y=y;
     update();
 }
 
@@ -183,8 +189,7 @@ void _gl_widget::mouseMoveEvent(QMouseEvent *Event)
 void _gl_widget::wheelEvent(QWheelEvent *Event)
 {
     //Most mouse types work in steps of 15 degrees, in which case the delta value is a multiple of 120; i.e., 120 units * 1/8 = 15 degrees.
-   // int Step=Event->delta()/120;
-    //QPoint numDegrees = Event->angleDelta()/8;
+
     const int degrees = Event->delta()  / 8;
     int steps = degrees / 15;
     //cout << degrees << " " << steps << endl;
@@ -229,13 +234,14 @@ void _gl_widget::change_projection()
 
   float Aspect=(float)Window_height/(float)Window_width;
 
+
+  /*************************/
+
   if (Projection_type==PERSPECTIVE_PROJECTION){
     glFrustum(-Camera_width,Camera_width,-Camera_width*Aspect, Camera_width*Aspect,FRONT_PLANE_PERSPECTIVE,BACK_PLANE_PERSPECTIVE);
   }
   else if (Projection_type==PARALLEL_PROJECTION){
-      //Projection . ortho ( X_MIN∗Scale_factor , X_MAX∗Scale_factor , Y_MIN∗Aspect∗Scale_factor , Y_MAX∗Aspect∗Scale_factor , FRONT_PLANE_PARALLEL , BACK_PLANE_PARALLEL ) ;
       glOrtho(-Camera_width*DEFAULT_SCALE_FACTOR , X_MAX*DEFAULT_SCALE_FACTOR , -Camera_width*Aspect*DEFAULT_SCALE_FACTOR , Camera_width*Aspect*DEFAULT_SCALE_FACTOR , FRONT_PLANE_PARALLEL , BACK_PLANE_PARALLEL );
-  /*************************/
 
   /*************************/
   }
@@ -276,6 +282,7 @@ void _gl_widget::draw_objects()
     glColor3fv((GLfloat *) &BLACK);
     switch (Object){
     case OBJECT_TETRAHEDRON:Tetrahedron.draw_point();break;
+    case OBJECT_PLY:Ply.draw_point();break;
     default:break;
     }
   }
@@ -285,6 +292,7 @@ void _gl_widget::draw_objects()
     glColor3fv((GLfloat *) &MAGENTA);
     switch (Object){
     case OBJECT_TETRAHEDRON:Tetrahedron.draw_line();break;
+    case OBJECT_PLY:Ply.draw_line();break;
     default:break;
     }
   }
@@ -292,15 +300,29 @@ void _gl_widget::draw_objects()
   if (Draw_fill){
     switch (Mode_rendering){
     case MODE_RENDERING_SOLID:
-      glColor3fv((GLfloat *) &BLUE);
+      //glColor3fv((GLfloat *) &BLUE);
       switch (Object){
       case OBJECT_TETRAHEDRON:Tetrahedron.draw_fill();break;
+      case OBJECT_PLY:Ply.draw_fill();break;
       default:break;
       }
       break;
     default:break;
     }
   }
+
+if (Draw_selection){
+  switch (Mode_rendering){
+  case MODE_RENDERING_SOLID:
+    switch (Object){
+    case OBJECT_TETRAHEDRON:Tetrahedron.draw_selection();break;
+    case OBJECT_PLY:Ply.draw_selection();break;
+    default:break;
+    }
+    break;
+  default:break;
+  }
+}
 }
 
 
@@ -391,11 +413,10 @@ void _gl_widget::initializeGL()
   Draw_line=true;
   Draw_fill=false;
   Draw_chess=false;
+  Draw_selection=false;
 
   Animation=false;
 
-  last_x=0;
-  last_y=0;
 
   Timer = new QTimer(this);
   Timer->setInterval(0);
@@ -407,8 +428,20 @@ void _gl_widget::initializeGL()
 
   /*************************/
 
+  _file_ply File;
+  vector<float> Coordinates;
+  vector<unsigned int> Positions;
+
+  File.open("/home/luis/Documentos/3/1/ig/ig-ugr/p5/esqueleto_qt_alumnos1/ply/beethoven.ply");
+  File.read(Coordinates,Positions);
+  Ply.create(Coordinates,Positions);
+  File.close();
+
+  last_x=0;
+  last_y=0;
 
   /*************************/
+
 }
 
 /**
@@ -445,59 +478,87 @@ void _gl_widget::tick()
 
 void _gl_widget::pick()
 {
-  makeCurrent();
+    /*
+     * Para poder seleccionar las partes del objeto con identificadores únicos se hará obteniendo un píxel del triángulo a seleccionar
+     * y pasando de RGB a entero.
+     *
+     * Para que eso sea posible dibujamos el objeto en un framebuffer distinto al que usamos para dibujar normalmente y se asigna a cada triángulo
+     * según el orden de dibujado sus componentes RGB(int -> RGB)
+     *
+     * Al hacer pick en un triángulo, se extrae un píxel y obtenemos el identificador único asociado(RGB -> int) de la selección sin tener que mostrar por pantalla el dibujado de los triángulos por tonalidades.
+     *
+     * Para ello: dibujamos los triángulos modificando el color con la posición
+     * se dibuja el objeto (en un framebuffer distinto al que usamos para dibujar en la ventana)
+     * para poder calcular los identificadores de cada parte del objeto haciendo uso de las componentes RGB
+     *
+     * */
 
-  // Frame Buffer Object to do the off-screen rendering
-  glGenFramebuffers(1,&FBO);
-  glBindFramebuffer(GL_FRAMEBUFFER,FBO);
+    makeCurrent();
 
-  // Texture for drawing
-  glGenTextures(1,&Color_texture);
-  glBindTexture(GL_TEXTURE_2D,Color_texture);
-  // RGBA8
-  glTexStorage2D(GL_TEXTURE_2D,1,GL_RGBA8, Window_width,Window_height);
-  // this implies that there is not mip mapping
-  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+    // Frame Buffer Object to do the off-screen rendering
+    glGenFramebuffers(1,&FBO);
+    glBindFramebuffer(GL_FRAMEBUFFER,FBO);
 
-  // Texure for computing the depth
-  glGenTextures(1,&Depth_texture);
-  glBindTexture(GL_TEXTURE_2D,Depth_texture);
-  // Float
-  glTexStorage2D(GL_TEXTURE_2D,1,GL_DEPTH_COMPONENT24, Window_width,Window_height);
+    // Texture for drawing
+    glGenTextures(1,&Color_texture);
+    glBindTexture(GL_TEXTURE_2D,Color_texture);
+    // RGBA8
+    glTexStorage2D(GL_TEXTURE_2D,1,GL_RGBA8, Window_width,Window_height);
+    // this implies that there is not mip mapping
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
 
-  // Attatchment of the textures to the FBO
-  glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,Color_texture,0);
-  glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,Depth_texture,0);
+    // Texure for computing the depth
+    glGenTextures(1,&Depth_texture);
+    glBindTexture(GL_TEXTURE_2D,Depth_texture);
+    // Float
+    glTexStorage2D(GL_TEXTURE_2D,1,GL_DEPTH_COMPONENT24, Window_width,Window_height);
 
-  // OpenGL will draw to these buffers (only one in this case)
-  static const GLenum Draw_buffers[]={GL_COLOR_ATTACHMENT0};
-  glDrawBuffers(1,Draw_buffers);
+    // Attatchment of the textures to the FBO
+    glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,Color_texture,0);
+    glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,Depth_texture,0);
 
-  /*************************/
+    // OpenGL will draw to these buffers (only one in this case)
+    static const GLenum Draw_buffers[]={GL_COLOR_ATTACHMENT0};
+    glDrawBuffers(1,Draw_buffers);
 
-  // dibujar para seleccion
+    /*************************/
 
-  /*************************/
+    switch (Object){
+        case OBJECT_TETRAHEDRON:Tetrahedron.draw_selection();break;
+        case OBJECT_PLY:Ply.draw_selection();break;
+    default:break;
+    }
 
-  // get the pixel
-  int Color;
-  glReadBuffer(GL_FRONT);
-  glPixelStorei(GL_PACK_ALIGNMENT,1);
-  glReadPixels(Selection_position_x,Selection_position_y,1,1,GL_RGBA,GL_UNSIGNED_BYTE,&Color);
+    /*************************/
 
-  /*************************/
+    // get the pixel
+    int Color;
+    glReadBuffer(GL_FRONT);
+    glPixelStorei(GL_PACK_ALIGNMENT,1);
+    glReadPixels(Selection_position_x,Selection_position_y,1,1,GL_RGBA,GL_UNSIGNED_BYTE,&Color);
 
-  // convertir de RGB a identificador
+    /*************************/
 
-  // actualizar el identificador en el objeto
+    uint B=uint ( ( Color & 0x00FF0000 ) >> 16 ) ;
+    uint G=uint ( ( Color & 0x0000FF00 ) >> 8 ) ;
+    uint R=uint ( ( Color & 0x000000FF ) ) ;
 
-  /*************************/
+    // RGB -> identifier
+    Selected_triangle = ( R << 16 ) + ( G << 8 ) + B ;
+    if ( Selected_triangle==16777215) Selected_triangle = -1;
 
-  glDeleteTextures(1,&Color_texture);
-  glDeleteTextures(1,&Depth_texture);
-  glDeleteFramebuffers(1,&FBO);
-  // the normal framebuffer takes the control of drawing
-  glBindFramebuffer(GL_DRAW_FRAMEBUFFER,defaultFramebufferObject());
+    switch (Object){
+        case OBJECT_TETRAHEDRON:Tetrahedron.selected_triangle(Selected_triangle);break;
+        case OBJECT_PLY:Ply.selected_triangle(Selected_triangle);break;
+    default:break;
+    }
+    /*************************/
+
+    glDeleteTextures(1,&Color_texture);
+    glDeleteTextures(1,&Depth_texture);
+    glDeleteFramebuffers(1,&FBO);
+    // the normal framebuffer takes the control of drawing
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER,defaultFramebufferObject());
 }
 
