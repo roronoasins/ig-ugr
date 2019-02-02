@@ -5,8 +5,9 @@ Prácticas realizadas en la asignatura Informática Gráfica - Dpto. de Lenguaje
 
 ## Herramientas utilizadas
 
-- [Qt](https://github.com/qt) Cross-platform software development for embedded & desktop
+- [Qt 5.11.2](https://www.qt.io/) Cross-platform software development for embedded & desktop
 - [OpenGL](https://www.opengl.org/) Open Graphics Library
+- [Glut](https://www.opengl.org/resources/libraries/glut/) The OpenGL Utility Toolkit
 
 ## Practicas realizadas:
 
