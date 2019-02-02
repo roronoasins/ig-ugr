@@ -8,6 +8,7 @@ Prácticas realizadas en la asignatura Informática Gráfica - Dpto. de Lenguaje
 - [Qt 5.11.2](https://www.qt.io/) Cross-platform software development for embedded & desktop
 - [OpenGL](https://www.opengl.org/) Open Graphics Library
 - [Glut](https://www.opengl.org/resources/libraries/glut/) The OpenGL Utility Toolkit
+- [Peek](https://github.com/phw/peek) An animated GIF recorder
 
 ## Practicas realizadas:
 
