@@ -20,6 +20,8 @@ Prácticas realizadas en la asignatura Informática Gráfica - Dpto. de Lenguaje
 ## Autor
 * **Luis González** - [roronoasins](https://github.com/roronoasins)
 
+## Support
+He creado en la [wiki](https://github.com/roronoasins/ig-ugr/wiki) una página donde destaco puntos importantes de la asignatura por si os sirve de guía para conocer mejor la asignatura.
 
 ## License
 Este proyecto está licenciado bajo GNU General Public License v3.0 - ver el fichero [LICENSE.md](LICENSE.md) para más detalles
