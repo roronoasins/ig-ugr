@@ -70,24 +70,14 @@ void _gl_widget::keyPressEvent(QKeyEvent *Keyevent)
   case Qt::Key_Up:Observer_angle_x-=ANGLE_STEP_KEY;break;
   case Qt::Key_Down:Observer_angle_x+=ANGLE_STEP_KEY;break;
 
-  /*************************/
   case Qt::Key_PageUp:
     if (Projection_type==PERSPECTIVE_PROJECTION) Observer_distance*=DISTANCE_FACTOR;
-    else{
-      /*************************/
-
-      /*************************/
-    }
+    else{Scale_factor*=DISTANCE_FACTOR;}
     break;
   case Qt::Key_PageDown:
     if (Projection_type==PERSPECTIVE_PROJECTION) Observer_distance/=DISTANCE_FACTOR;
-    else{
-      /*************************/
-
-      /*************************/
-    }
+    else{Scale_factor/=DISTANCE_FACTOR;}
     break;
-  /*************************/
 
   case Qt::Key_Q:break;
   case Qt::Key_W:break;
@@ -118,20 +108,10 @@ void _gl_widget::keyPressEvent(QKeyEvent *Keyevent)
 
 void _gl_widget::mousePressEvent(QMouseEvent *Event)
 {
-  /*************************/
-
-    /*if ( Event->buttons ( ) & Qt::LeftButton ) {
-        Change_position=true ;
-        Initial_position_x = Event->x();
-        Initial_position_y = Event->y();
-    }
-    else */
     if ( Event->buttons() & Qt::RightButton ) {
         Selection_position_x = Event->x();
         Selection_position_y = height() - Event->y();
     }
-
-  /*************************/
 }
 
 /**
@@ -142,7 +122,6 @@ void _gl_widget::mousePressEvent(QMouseEvent *Event)
 
 void _gl_widget::mouseReleaseEvent(QMouseEvent *Event)
 {
-  /*************************/
 
     if (Draw_fill) {
         if ( Event->button() & Qt::RightButton ) {
@@ -151,9 +130,6 @@ void _gl_widget::mouseReleaseEvent(QMouseEvent *Event)
             update();
         }
     }
-
-  /*************************/
-
 
 }
 
@@ -198,8 +174,8 @@ void _gl_widget::wheelEvent(QWheelEvent *Event)
         if (degrees > 0) Observer_distance /= steps*DISTANCE_FACTOR;
         else if (degrees < 0)  Observer_distance *= abs(steps*DISTANCE_FACTOR);
     }else if (Projection_type==PARALLEL_PROJECTION) {
-            if (degrees > 0) Observer_distance /= steps*DISTANCE_FACTOR*DEFAULT_SCALE_FACTOR;
-            else if (degrees < 0)  Observer_distance *= abs(steps*DISTANCE_FACTOR*DEFAULT_SCALE_FACTOR);
+            if (degrees > 0) Scale_factor /= steps*DISTANCE_FACTOR;
+            else if (degrees < 0)  Scale_factor *= abs(steps*DISTANCE_FACTOR);
             }
 
     Event->accept();
@@ -234,16 +210,11 @@ void _gl_widget::change_projection()
 
   float Aspect=(float)Window_height/(float)Window_width;
 
-
-  /*************************/
-
   if (Projection_type==PERSPECTIVE_PROJECTION){
     glFrustum(-Camera_width,Camera_width,-Camera_width*Aspect, Camera_width*Aspect,FRONT_PLANE_PERSPECTIVE,BACK_PLANE_PERSPECTIVE);
   }
   else if (Projection_type==PARALLEL_PROJECTION){
-      glOrtho(-Camera_width*DEFAULT_SCALE_FACTOR , X_MAX*DEFAULT_SCALE_FACTOR , -Camera_width*Aspect*DEFAULT_SCALE_FACTOR , Camera_width*Aspect*DEFAULT_SCALE_FACTOR , FRONT_PLANE_PARALLEL , BACK_PLANE_PARALLEL );
-
-  /*************************/
+      glOrtho(-Camera_width*Scale_factor , Camera_width*Scale_factor , -Camera_width*Aspect*Scale_factor , Camera_width*Aspect*Scale_factor , FRONT_PLANE_PARALLEL , BACK_PLANE_PARALLEL );
   }
 }
 
@@ -426,22 +397,18 @@ void _gl_widget::initializeGL()
   Object=OBJECT_TETRAHEDRON;
   Mode_rendering=MODE_RENDERING_SOLID;
 
-  /*************************/
-
   _file_ply File;
   vector<float> Coordinates;
   vector<unsigned int> Positions;
 
-  File.open("/home/luis/Documentos/3/1/ig/ig-ugr/p5/esqueleto_qt_alumnos1/ply/beethoven.ply");
+  File.open("/home/roronoasins/Documents/3/1/ig/ig-ugr/p5/esqueleto_qt_alumnos1/ply/beethoven.ply");
   File.read(Coordinates,Positions);
   Ply.create(Coordinates,Positions);
   File.close();
 
   last_x=0;
   last_y=0;
-
-  /*************************/
-
+  Scale_factor = 5;
 }
 
 /**
@@ -522,15 +489,11 @@ void _gl_widget::pick()
     static const GLenum Draw_buffers[]={GL_COLOR_ATTACHMENT0};
     glDrawBuffers(1,Draw_buffers);
 
-    /*************************/
-
     switch (Object){
         case OBJECT_TETRAHEDRON:Tetrahedron.draw_selection();break;
         case OBJECT_PLY:Ply.draw_selection();break;
     default:break;
     }
-
-    /*************************/
 
     // get the pixel
     int Color;
@@ -538,11 +501,10 @@ void _gl_widget::pick()
     glPixelStorei(GL_PACK_ALIGNMENT,1);
     glReadPixels(Selection_position_x,Selection_position_y,1,1,GL_RGBA,GL_UNSIGNED_BYTE,&Color);
 
-    /*************************/
-
     uint B=uint ( ( Color & 0x00FF0000 ) >> 16 ) ;
     uint G=uint ( ( Color & 0x0000FF00 ) >> 8 ) ;
     uint R=uint ( ( Color & 0x000000FF ) ) ;
+    cout << R << " " << G << " " << B << " " << endl;
 
     // RGB -> identifier
     Selected_triangle = ( R << 16 ) + ( G << 8 ) + B ;
@@ -553,7 +515,6 @@ void _gl_widget::pick()
         case OBJECT_PLY:Ply.selected_triangle(Selected_triangle);break;
     default:break;
     }
-    /*************************/
 
     glDeleteTextures(1,&Color_texture);
     glDeleteTextures(1,&Depth_texture);

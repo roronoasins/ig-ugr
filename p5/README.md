@@ -1,13 +1,13 @@
-# Informática Gráfica UGR
+# Práctica 5 - Interacción
 > Escuela Técnica Superior de Ingeniería Informática y Telecomunicaciones, Universidad de Granada
 
 Prácticas realizadas en la asignatura Informática Gráfica - Dpto. de Lenguajes y Sistemas Informáticos - en la Universidad de Granada, curso 2018-2019.
 
-## Herramientas utilizadas
+## Objetivos
 
-- [Qt 5.11.2](https://www.qt.io/) Cross-platform software development for embedded & desktop
-- [OpenGL](https://www.opengl.org/) Open Graphics Library
-- [Glut](https://www.opengl.org/resources/libraries/glut/) The OpenGL Utility Toolkit
+- Mover la cámara con el ratón (Rotación y zoom)
+- Implementar la cámara ortogonal y el zoom de la misma
+- Selección
 
 ## Practicas realizadas:
 
