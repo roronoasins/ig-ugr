@@ -1,14 +1,14 @@
 # Informática Gráfica UGR
 > Escuela Técnica Superior de Ingeniería Informática y Telecomunicaciones, Universidad de Granada
 
-Prácticas realizadas en la asignatura Informática Gráfica - Dpto. de Lenguajes y Sistemas Informáticos - en la Universidad de Granada, curso 2018-2019.
+Prácticas realizadas en la asignatura Informática Gráfica - Dpto. de Lenguajes y Sistemas Informáticos - curso 2018-2019.
 
 ## Herramientas utilizadas
 
-- [Qt 5.11.2](https://www.qt.io/) Cross-platform software development for embedded & desktop
-- [OpenGL](https://www.opengl.org/) Open Graphics Library
-- [Glut](https://www.opengl.org/resources/libraries/glut/) The OpenGL Utility Toolkit
-- [Peek](https://github.com/phw/peek) An animated GIF recorder
+- [Qt 5.11.2](https://www.qt.io/) - Cross-platform software development for embedded & desktop
+- [OpenGL](https://www.opengl.org/) - Open Graphics Library
+- [Glut](https://www.opengl.org/resources/libraries/glut/) - The OpenGL Utility Toolkit
+- [Peek](https://github.com/phw/peek) - An animated GIF recorder
 
 ## Practicas realizadas:
 
